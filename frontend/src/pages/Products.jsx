@@ -17,8 +17,21 @@ function Products() {
 
 
     const [search, setSearch] = useState("");
+    const [debouncedSearch, setDebouncedSearch] = useState("");
+
     const [category, setCategory] = useState("");
     const [status, setStatus] = useState("");
+
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(search);
+        }, 500);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [search]);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -30,8 +43,8 @@ function Products() {
 
             const params = {};
 
-            if (search.trim()) {
-                params.search = search.trim();
+            if (debouncedSearch.trim()) {
+                params.search = debouncedSearch.trim();
             }
 
             if (category) {
@@ -56,7 +69,7 @@ function Products() {
 
     useEffect(() => {
         fetchProducts();
-    }, [search, category, status]);
+    }, [debouncedSearch, category, status]);
 
 
     useEffect(() => {
