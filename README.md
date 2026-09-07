@@ -1,60 +1,57 @@
 # Inventory Management System
 
-A simple full-stack Inventory Management System built as part of a Full Stack Developer assignment.
+A full-stack inventory management application built for a Full Stack Developer assignment.
 
-The application provides product management, inventory tracking, search and filtering, automatic stock-status calculation, and a dashboard with inventory statistics.
+The application allows users to add, edit, delete and manage products. It also provides search and filters, automatic stock status, and a dashboard showing inventory information.
 
 ## Features
 
-### Product Management
-- Create products
+### Products
+- Add a new product
 - View all products
-- View a single product
-- Edit products
-- Delete products
+- Edit product
+- Delete product
 - Update product quantity
-
-### Inventory Management
-The products page displays:
-- Product name
-- Category
-- Price
-- Available quantity
-- Stock status
-
-Stock status is calculated automatically from quantity:
-
-| Quantity | Stock Status |
-|---|---|
-| Greater than 10 | In Stock |
-| 1 to 10 | Low Stock |
-| 0 | Out of Stock |
-
-Stock status is **not stored in the database**. It is calculated by the backend from the product quantity.
 
 ### Search and Filters
 - Search products by name
-- Filter by category
-- Filter by stock status
-- Combine search and filters
+- Filter products by category
+- Filter products by stock status
+- Use multiple filters together
+
+### Stock Status
+
+Stock status is calculated from the product quantity:
+
+| Quantity | Status |
+|----------|--------|
+| More than 10 | In Stock |
+| 1 - 10 | Low Stock |
+| 0 | Out of Stock |
+
+Stock status is not stored in the database. It is calculated by the backend whenever product data is returned.
 
 ### Dashboard
-The dashboard displays:
+
+The dashboard shows:
+
 - Total Products
 - Total Inventory Quantity
 - Low Stock Products
 - Out of Stock Products
 
-Dashboard statistics are calculated from the backend/database.
+The dashboard values are calculated from the database.
 
-### Validation and Error Handling
-Validation is implemented on both frontend and backend:
+### Validation
+
+Product validation is handled on both frontend and backend.
+
 - Product name is required
 - Category is required
-- Price must be greater than or equal to 0
+- Price must be 0 or more
 - Quantity must be a non-negative integer
 
-The backend uses appropriate HTTP status codes and centralized error handling.
+The API also returns appropriate HTTP status codes for validation errors, missing products and server errors.
 
 ---
 
@@ -71,7 +68,6 @@ The backend uses appropriate HTTP status codes and centralized error handling.
 - Node.js
 - Express.js
 - JavaScript
-- Axios-compatible REST API
 - MySQL2
 
 ### Database
@@ -79,100 +75,30 @@ The backend uses appropriate HTTP status codes and centralized error handling.
 
 ---
 
-## Project Structure
+## Requirements
 
-```text
-inventory-management-system/
-│
-├── backend/
-│   ├── config/
-│   │   └── db.js
-│   ├── controllers/
-│   │   ├── dashboardController.js
-│   │   └── productController.js
-│   ├── middleware/
-│   │   └── errorHandler.js
-│   ├── routes/
-│   │   ├── dashboardRoutes.js
-│   │   └── productRoutes.js
-│   ├── utils/
-│   │   └── productUtils.js
-│   ├── .env
-│   ├── .env.example
-│   ├── .gitignore
-│   ├── package.json
-│   └── server.js
-│
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   │   └── Navbar.jsx
-│   │   ├── pages/
-│   │   │   ├── Dashboard.jsx
-│   │   │   ├── ProductForm.jsx
-│   │   │   └── Products.jsx
-│   │   ├── services/
-│   │   │   ├── dashboardService.js
-│   │   │   └── productService.js
-│   │   ├── App.jsx
-│   │   ├── App.css
-│   │   └── main.jsx
-│   ├── .env.example
-│   ├── .gitignore
-│   └── package.json
-│
-└── README.md
-```
-
----
-
-## Prerequisites
-
-Make sure the following are installed:
+Before running the project, install:
 
 - Node.js
 - npm
 - MySQL
-- XAMPP (optional, used for running MySQL and phpMyAdmin)
+
+You can use XAMPP to run MySQL and phpMyAdmin if needed.
 
 ---
 
-# Backend Setup
+# Setup
 
-## 1. Open the backend directory
-
-```bash
-cd backend
-```
-
-## 2. Install dependencies
+## 1. Clone the repository
 
 ```bash
-npm install
+git clone https://github.com/shyambaba2904-hub/inventory-management-system.git
+cd inventory-management-system
 ```
 
-## 3. Configure environment variables
+# Database Setup
 
-Create a `.env` file inside the `backend` directory.
-
-Example:
-
-```env
-PORT=5000
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=
-DB_NAME=inventory_management_db
-DB_PORT=3306
-```
-
-Do not commit the real `.env` file to GitHub.
-
----
-
-## 4. Create the database
-
-Using MySQL/phpMyAdmin, create the database:
+Create a MySQL database:
 
 ```sql
 CREATE DATABASE inventory_management_db;
@@ -193,75 +119,70 @@ CREATE TABLE products (
 );
 ```
 
-The database does not contain a `status` column because stock status is calculated automatically by the backend.
+There is no `status` column because stock status is calculated from `quantity`.
 
----
+# Backend Setup
 
-## 5. Start the backend
+```bash
+cd backend
+npm install
+```
 
-For development:
+Create a `.env` file in the `backend` folder:
+
+```env
+PORT=5000
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=inventory_management_db
+DB_PORT=3306
+```
+
+Update the database values if your MySQL setup is different.
+
+Start the backend:
 
 ```bash
 npm run dev
 ```
 
-Or:
-
-```bash
-npm start
-```
-
-The backend runs by default at:
+The API will run on:
 
 ```text
 http://localhost:5000
 ```
 
----
-
 # Frontend Setup
 
-## 1. Open the frontend directory
-
-From the project root:
+Open another terminal:
 
 ```bash
 cd frontend
-```
-
-## 2. Install dependencies
-
-```bash
 npm install
 ```
 
-## 3. Configure environment variables
-
-Create a `.env` file inside the `frontend` directory:
+Create a `.env` file in the `frontend` folder:
 
 ```env
 VITE_API_URL=http://localhost:5000/api
 ```
 
----
-
-## 4. Start the frontend
+Start the frontend:
 
 ```bash
 npm run dev
 ```
 
-Vite will display the local development URL in the terminal, normally:
+Vite will show the frontend URL in the terminal, normally:
 
 ```text
 http://localhost:5173
 ```
 
-Make sure the backend is running before using the application.
+Make sure the backend and MySQL are running before using the application.
 
----
-
-# API Documentation
+# API Endpoints
 
 Base URL:
 
@@ -271,46 +192,17 @@ http://localhost:5000/api
 
 ## Products
 
-### Create Product
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/products` | Create a product |
+| GET | `/products` | Get all products |
+| GET | `/products/:id` | Get one product |
+| PUT | `/products/:id` | Update a product |
+| DELETE | `/products/:id` | Delete a product |
+| PATCH | `/products/:id/quantity` | Update product quantity |
+| GET | `/products/categories` | Get product categories |
 
-```http
-POST /api/products
-```
-
-Request body:
-
-```json
-{
-  "name": "Wireless Keyboard",
-  "category": "Electronics",
-  "price": 1499,
-  "quantity": 25
-}
-```
-
-Response:
-
-```http
-201 Created
-```
-
----
-
-### Get Products
-
-```http
-GET /api/products
-```
-
-Optional query parameters:
-
-```text
-search
-category
-status
-```
-
-Examples:
+### Search and Filters
 
 ```text
 GET /api/products?search=Laptop
@@ -324,94 +216,15 @@ GET /api/products?category=Electronics
 GET /api/products?status=Low%20Stock
 ```
 
-Multiple filters can be combined:
+Multiple filters can be used together:
 
 ```text
 GET /api/products?search=Laptop&category=Electronics&status=In%20Stock
 ```
 
----
-
-### Get Product by ID
-
-```http
-GET /api/products/:id
-```
-
-Example:
-
-```text
-GET /api/products/14
-```
-
----
-
-### Update Product
-
-```http
-PUT /api/products/:id
-```
-
-Request body:
-
-```json
-{
-  "name": "Wireless Keyboard Pro",
-  "category": "Electronics",
-  "price": 1799,
-  "quantity": 20
-}
-```
-
----
-
-### Delete Product
-
-```http
-DELETE /api/products/:id
-```
-
-Example:
-
-```text
-DELETE /api/products/14
-```
-
----
-
-### Update Product Quantity
-
-```http
-PATCH /api/products/:id/quantity
-```
-
-Request body:
-
-```json
-{
-  "quantity": 15
-}
-```
-
-This endpoint updates only the quantity. The stock status is then recalculated automatically.
-
----
-
-### Get Categories
-
-```http
-GET /api/products/categories
-```
-
-Returns the distinct product categories used by the inventory.
-
----
-
 ## Dashboard
 
-### Get Dashboard Statistics
-
-```http
+```text
 GET /api/dashboard
 ```
 
@@ -419,75 +232,26 @@ Example response:
 
 ```json
 {
-  "totalProducts": 10,
-  "totalInventoryQuantity": 250,
-  "lowStockProducts": 3,
-  "outOfStockProducts": 2
+    "totalProducts": 10,
+    "totalInventoryQuantity": 250,
+    "lowStockProducts": 3,
+    "outOfStockProducts": 2
 }
 ```
 
----
-
 # HTTP Status Codes
 
-The API uses standard HTTP status codes, including:
-
-| Status | Meaning |
-|---|---|
+| Status | Description |
+|--------|-------------|
 | 200 | Request successful |
-| 201 | Product created successfully |
-| 400 | Invalid request or validation error |
+| 201 | Product created |
+| 400 | Invalid input |
 | 404 | Product not found |
-| 500 | Internal server error |
-
----
-
-# Stock Status Logic
-
-Stock status is derived from the product quantity.
-
-```text
-quantity > 10
-    → In Stock
-
-quantity 1–10
-    → Low Stock
-
-quantity = 0
-    → Out of Stock
-```
-
-The status is calculated when products are returned by the backend and is never manually stored in the database.
-
----
-
-# Running the Complete Application
-
-Start MySQL through XAMPP or another MySQL installation.
-
-Then open two terminals.
-
-### Terminal 1 — Backend
-
-```bash
-cd backend
-npm run dev
-```
-
-### Terminal 2 — Frontend
-
-```bash
-cd frontend
-npm run dev
-```
-
-Open the frontend URL shown by Vite in your browser.
-
----
+| 500 | Server error |
 
 # Environment Variables
 
-### Backend
+## Backend
 
 ```env
 PORT=5000
@@ -498,44 +262,39 @@ DB_NAME=inventory_management_db
 DB_PORT=3306
 ```
 
-### Frontend
+## Frontend
 
 ```env
 VITE_API_URL=http://localhost:5000/api
 ```
 
-Real credentials should never be committed to the repository. Use `.env.example` files for sharing configuration structure.
+Actual `.env` files are not committed to GitHub. `.env.example` files are included so the required variables are clear.
 
----
+# Running the Project
 
-# Code Quality
+Start MySQL using XAMPP or your local MySQL installation.
 
-The project follows a simple and maintainable structure with:
+### Backend
 
-- Separate frontend and backend applications
-- Controllers for backend request handling
-- Routes for API endpoints
-- Centralized backend error handling
-- Utility function for stock-status calculation
-- Environment-based configuration
-- Parameterized SQL queries
-- Frontend service layer for API requests
-- Reusable product form for creating and editing products
+```bash
+cd backend
+npm run dev
+```
 
-The implementation intentionally avoids unnecessary complexity and focuses on the core requirements of the assignment.
+### Frontend
 
----
+In another terminal:
 
-# Assignment Scope
+```bash
+cd frontend
+npm run dev
+```
 
-This project was developed as a one-day scoped full-stack assignment. The primary focus is on:
+Then open the frontend URL shown by Vite.
 
-- Functional frontend
-- Functional backend
-- MySQL database integration
-- Correct inventory logic
-- REST API design
-- Validation and error handling
-- Clean and maintainable code
+## Notes
 
-
+- Stock status is calculated from quantity and is not stored in the database.
+- Dashboard statistics come from the database through the backend API.
+- SQL queries use parameters instead of directly adding user input to queries.
+- Backend errors are handled through a common error-handling middleware.
